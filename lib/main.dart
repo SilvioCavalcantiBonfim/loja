@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';  // Para decodificar JSON
+import './ProductCard.dart';
 
 
 void main() {
@@ -37,6 +38,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   List<dynamic> _produtos = [];
+
 @override
 void initState() {
   super.initState();
@@ -64,11 +66,6 @@ Future<void> fazerRequisicao() async {
 }
 
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,13 +104,6 @@ Future<void> fazerRequisicao() async {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
             const SizedBox(height: 20),
             const Text('Produtos:'),
             Expanded(
@@ -121,22 +111,17 @@ Future<void> fazerRequisicao() async {
                 itemCount: _produtos.length,
                 itemBuilder: (context, index) {
                   // Instanciando o nome de cada produto
-                  String nomeProduto = _produtos[index]['title'] ?? 'Nome não disponível';
-                  return ListTile(
-                    title: Text(nomeProduto), // Nome do produto
-                    subtitle: Text('Preço: \$${_produtos[index]['price']}'), // Preço do produto
-                  );
+                  return ProductCard(
+                    imageUrl: _produtos[index]['thumbnail'], // Substitua pela URL real
+            productName: _produtos[index]['title'],
+            price: _produtos[index]['price']
+            );
                 },
               ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
